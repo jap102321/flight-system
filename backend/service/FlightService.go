@@ -33,7 +33,7 @@ func GetAllFlights(context *gin.Context) {
 }
 
 func GetFlightByFlightNumber(context *gin.Context){
-	flightNumber := context.Param("flight-number")
+	flightNumber := context.Param(strings.ToUpper("flight-number"))
 
 	flightFetched, err := FlightModel.GetFlightByFlightNumber(strings.ToUpper(flightNumber))	
 
@@ -63,7 +63,7 @@ func SaveFlight(cx *gin.Context){
 		return
 	}
 
-	newUser := model.Flight{
+	newFlight := model.Flight{
 		ID: primitive.NewObjectID(),
 		Airline: flight.Airline,
 		FlightNumber: strings.ToUpper(flight.FlightNumber),
@@ -72,7 +72,7 @@ func SaveFlight(cx *gin.Context){
 		PlaneId: flight.PlaneId,
 	}
 
-	res, err := flight.Save(&newUser)
+	res, err := flight.Save(&newFlight)
 
 	if err != nil {
 		cx.JSON(http.StatusInternalServerError, gin.H{

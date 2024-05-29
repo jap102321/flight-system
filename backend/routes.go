@@ -6,8 +6,19 @@ import (
 )
 
 func Routes(server *gin.Engine) {
-	server.GET("/flights", service.GetAllFlights)
-	server.GET("/flights/:flight-number", service.GetFlightByFlightNumber)
-	server.POST("/flights", service.SaveFlight)
-	server.DELETE("/flights/:flight-number", service.DeleteFlight)
+
+	flightRoutes := server.Group("/flights")
+	flightRoutes.GET("/", service.GetAllFlights)
+	flightRoutes.GET("/:flight-number", service.GetFlightByFlightNumber)
+	flightRoutes.POST("/", service.SaveFlight)
+	flightRoutes.DELETE("/:flight-number", service.DeleteFlight)
+
+	planeRoutes := server.Group("/plane")
+	planeRoutes.GET("/:plane_id", service.GetPlane)
+	planeRoutes.POST("/", service.SaveNewPlaneToDb)
+	planeRoutes.PUT("/:plane_id", service.UpdateAvailSeats)
+
+	customerRoutes := server.Group("/customer")
+	customerRoutes.POST("/", service.CreateCustomer)
+	customerRoutes.POST("/bulk", service.CreateCustomersBulk)
 }

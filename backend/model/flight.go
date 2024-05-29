@@ -20,25 +20,19 @@ type Flight struct {
 }
 
 
-
-
-
 func (f Flight) GetAllFlights() (interface{}, error){
 	ctx := context.Background()
     query, err := db.DB.Collection("flight").Find(ctx, bson.D{{}})
 
 	if err != nil{
-		fmt.Println("firstif",err)
-
-		return []Flight{}, err
+		return nil, err
 	}
 
-	
+	 
 	var flights []bson.M
 
 	if err = query.All(context.TODO(), &flights); err != nil{
-		fmt.Println("secondif",err)
-		return []Flight{},err
+		return nil,err
 	}
 
 	return flights, nil
