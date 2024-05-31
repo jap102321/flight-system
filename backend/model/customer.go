@@ -18,8 +18,11 @@ type Customer struct {
 	AgeCategory string `json:"age_category" bson:"age_category"`
 	DateOfBirth time.Time `json:"date_of_birth" bson:"date_of_birth"`
 	Age int `json:"age" bson:"age"`
-	ReservationNumber string `json:"reservation_number" bson:"reservation_number" binding:"required"`
+	ReservationNumber string `json:"reservation_number" bson:"reservation_number"`
+	DocumentNumber string `json:"document_number" bson:"document_number"`
 }
+
+
 
 
 func (c Customer) SaveClient(newClient interface{}) (*mongo.InsertOneResult, error){
@@ -31,6 +34,22 @@ func (c Customer) SaveClient(newClient interface{}) (*mongo.InsertOneResult, err
 
 	return res, nil
 }
+
+func (c Customer)GetCustomersByResNumber(res_number string) (*mongo.Cursor, error){
+	filter := bson.M{"reservation_number": res_number}
+
+	cursor, err := db.DB.Collection("customer").Find(context.TODO(), filter)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(context.TODO())
+
+	return cursor, nil
+}
+
+
 
 func (c Customer) GetAllCustomers() (interface{}, error){
 

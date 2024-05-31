@@ -21,4 +21,8 @@ func Routes(server *gin.Engine) {
 	customerRoutes := server.Group("/customer")
 	customerRoutes.POST("/", service.CreateCustomer)
 	customerRoutes.POST("/bulk", service.CreateCustomersBulk)
+	customerRoutes.GET("/:document", service.CreateCustomersBulk)
+
+	reservationRoutes := server.Group("/reservation")
+	reservationRoutes.POST("/:flight-number", service.SaveReservation)
 }

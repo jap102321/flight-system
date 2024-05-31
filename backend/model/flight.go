@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/jap102321/flight-system/db"
 	"go.mongodb.org/mongo-driver/bson"
@@ -17,6 +18,9 @@ type Flight struct {
 	Origin       string             `json:"origin" bson:"origin"`
 	Destiny      string             `json:"destiny" bson:"destiny"`
 	PlaneId      string             `json:"plane_id" bson:"plane_id"`
+	DateOfDeparture time.Time `json:"date_of_departure" bson:"date_of_departure"`
+	DateOfArrival time.Time `json:"date_of_arrival" bson:"date_of_arrival"`
+	Passengers []Reservation `json:"passengers" bson:"passengers"`
 }
 
 

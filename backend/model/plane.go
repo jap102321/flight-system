@@ -17,6 +17,7 @@ type Plane struct {
 	AvailableSeats int64 `json:"available_seats" bson:"available_seats"`
 }
 
+
 func (p Plane) GetPlaneInfo(fNumber string) (*primitive.M, error){
 	var plane bson.M
 	

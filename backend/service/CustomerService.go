@@ -13,7 +13,7 @@ var customer model.Customer
 
 
 
-func getCustomerAgeCategory(customer model.Customer) string{
+func GetCustomerAgeCategory(customer model.Customer) string{
 	if customer.Age >= 16 {
 		customer.AgeCategory = "Adult"
 		return customer.AgeCategory
@@ -57,7 +57,7 @@ func CreateCustomer(ctx *gin.Context){
 		DateOfBirth: customer.DateOfBirth,
 		ReservationNumber: customer.ReservationNumber,
 	}
-	newCustomer.AgeCategory = getCustomerAgeCategory(newCustomer)
+	newCustomer.AgeCategory = GetCustomerAgeCategory(newCustomer)
 
 	res, err := customer.SaveClient(newCustomer)
 
@@ -91,7 +91,7 @@ func CreateCustomersBulk(ctx *gin.Context){
 	for _, customer := range customers{
 		customer.ID = primitive.NewObjectID()
 		customer.Age = time.Now().Year() - customer.DateOfBirth.Year()
-		customer.AgeCategory = getCustomerAgeCategory(customer)
+		customer.AgeCategory = GetCustomerAgeCategory(customer)
 
 		documents = append(documents, customer)
 	}
