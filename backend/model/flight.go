@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -20,7 +19,7 @@ type Flight struct {
 	PlaneId      string             `json:"plane_id" bson:"plane_id"`
 	DateOfDeparture time.Time `json:"date_of_departure" bson:"date_of_departure"`
 	DateOfArrival time.Time `json:"date_of_arrival" bson:"date_of_arrival"`
-	Passengers []Reservation `json:"passengers" bson:"passengers"`
+	Passengers []primitive.ObjectID `json:"passengers" bson:"passengers"`
 }
 
 
@@ -42,11 +41,11 @@ func (f Flight) GetAllFlights() (interface{}, error){
 	return flights, nil
 }
 
-
-func (f Flight) GetFlightByFlightNumber(fNumber string) (interface{}, error){
-
+func (f Flight) GetFlightByFlightNumber(fNumber string) (*primitive.M, error){
 	var flight bson.M
-	err := db.DB.Collection("flight").FindOne(context.TODO(), bson.D{primitive.E{Key: "flight_number", Value: fNumber}}).Decode(&flight)
+	filter := bson.M{"flight_number": fNumber}
+
+	err := db.DB.Collection("flight").FindOne(context.TODO(), filter).Decode(&flight)
 
 	if err != nil {
 		return nil, err
@@ -69,7 +68,6 @@ func (f *Flight) Save(flightToAdd interface{}) (interface{}, error){
 func (f Flight) DeleteEvent(flight_number string) (interface{}, error){
 	filter := bson.M{"flight_number": flight_number}
 
-	fmt.Println(filter)
 
 	delRes, err := db.DB.Collection("flight").DeleteOne(context.TODO(), filter)
 

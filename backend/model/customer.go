@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/jap102321/flight-system/db"
@@ -72,7 +71,6 @@ func (c Customer) SaveClientBulk(newClients []interface{}) (*mongo.InsertManyRes
 	res, err := db.DB.Collection("customer").InsertMany(context.TODO(), newClients)
 
 	if err != nil{
-		fmt.Println("Error: ", err)
 		return nil, err
 	}
 

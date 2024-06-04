@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"crypto/rand"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -45,19 +46,34 @@ func (r Reservation)GetAllReservations() (*mongo.Cursor, error){
 	return res, nil
 }
 
-func (r Reservation)GetAllReservationsForFlight(flight_number string)(*mongo.Cursor, error){
-	filter := bson.M{"flight_number" : flight_number}
+func (r Reservation) GetAllReservationsForFlight(flightNumber string) ([]bson.M, error) {
+    filter := bson.M{"flight_number": flightNumber}
 
+    pipeline := mongo.Pipeline{
+        {{Key: "$match", Value: filter}},
+        {{Key: "$lookup", Value: bson.M{
+            "from":         "customer",
+            "localField":   "customers_ids",
+            "foreignField": "_id",
+            "as":           "customers",
+        }}},
+        {{Key: "$project", Value: bson.M{
+            "customers_ids": 0,
+        }}},
+    }
 
-	cursor , err := db.DB.Collection("reservation").Find(context.TODO(), filter)
+    cursor, err := db.DB.Collection("reservation").Aggregate(context.TODO(), pipeline)
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.TODO())
 
-	if err != nil {
-		return nil, err
-	}
+    var reservations []bson.M
+    if err = cursor.All(context.TODO(), &reservations); err != nil {
+        return nil, err
+    }
 
-	defer cursor.Close(context.TODO())
-
-	return cursor, nil
+    return reservations, nil
 }
 
 func (r Reservation) Save(newReservation interface{})(*mongo.InsertOneResult, error){
@@ -82,9 +98,11 @@ func (r Reservation) DeleteReservation(res_number string) (*mongo.DeleteResult, 
 	return res, nil
 }
 
-func (r Reservation) AddReservationToFlight(flight_number string, reservation interface{}) error{
+func (r Reservation) AddReservationToFlight(flight_number string, reservation primitive.ObjectID) error{
 	filter := bson.M{"flight_number" : flight_number}
 	update := bson.M{"$push": bson.M{"passengers" : reservation}}
+
+	fmt.Println(reservation)
 
 	_, err := db.DB.Collection("flight").UpdateOne(context.TODO(), filter, update)
 

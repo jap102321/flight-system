@@ -18,10 +18,10 @@ type Plane struct {
 }
 
 
-func (p Plane) GetPlaneInfo(fNumber string) (*primitive.M, error){
+func (p Plane) GetPlaneInfo(plane_id string) (*primitive.M, error){
 	var plane bson.M
 	
-	err:= db.DB.Collection("plane").FindOne(context.TODO(), bson.D{primitive.E{Key: "plane_id", Value: fNumber}}).Decode(&plane)
+	err:= db.DB.Collection("plane").FindOne(context.TODO(), bson.D{primitive.E{Key: "plane_id", Value: plane_id}}).Decode(&plane)
 
 	if err != nil {
 		return nil, err
@@ -53,21 +53,25 @@ func (p Plane) DeletePlane(flight_number string) (*mongo.DeleteResult, error) {
 	return res, nil
 }
 
-func (p *Plane)UpdatePlaneSeats(plane_id string) (*mongo.UpdateResult, error){
+func (p *Plane)UpdatePlaneSeats(plane_id string, numberOfCustomers int) (*mongo.UpdateResult, error){
 	var plane Plane
 	res, err := plane.GetPlaneInfo(plane_id)
 
-	id, ok := (*res)["_id"].(primitive.ObjectID)
+	if err != nil {
+		return nil, err
+	}
 
+	id, ok := (*res)["_id"].(primitive.ObjectID)
 	if !ok{
 		return nil, errors.New("could not find id")
 	}
 
 	filter := bson.D{primitive.E{Key: "_id", Value: id}}
-	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "available_seats", Value: -1}} }}
+	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "available_seats", Value: - numberOfCustomers}} }}
 
 
 	resUpdate, err := db.DB.Collection("plane").UpdateOne(context.TODO(), filter, update)
+
 	if err != nil {
 		return nil, err 
 	}

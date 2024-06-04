@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jap102321/flight-system/model"
@@ -68,30 +67,5 @@ func SaveNewPlaneToDb(ctx *gin.Context){
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message":"New flight added", 
 		"plane": res,
-	})
-}
-
-func UpdateAvailSeats(ctx *gin.Context){
-	var plane model.Plane
-	id := ctx.Param("plane_id")
-
-
-	res, err := plane.UpdatePlaneSeats(strings.ToUpper(id))
-
-	if err == mongo.ErrNoDocuments{
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"message": "Could not find plane",
-		})
-		return
-	}else if err != nil{
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not update available seats",
-		})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Available seats updated succesfully",
-		"rows updated": res,
 	})
 }

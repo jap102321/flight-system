@@ -6,14 +6,12 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jap102321/flight-system/config"
 	"github.com/jap102321/flight-system/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var FlightModel model.Flight
-var app config.GoAppTools
 
 func GetAllFlights(context *gin.Context) {
 	flights, err := FlightModel.GetAllFlights()
@@ -33,9 +31,10 @@ func GetAllFlights(context *gin.Context) {
 }
 
 func GetFlightByFlightNumber(context *gin.Context){
-	flightNumber := context.Param(strings.ToUpper("flight-number"))
+	var flight model.Flight
+	flightNumber := context.Param("flight-number")
 
-	flightFetched, err := FlightModel.GetFlightByFlightNumber(strings.ToUpper(flightNumber))	
+	flightFetched, err := flight.GetFlightByFlightNumber(strings.ToUpper(flightNumber))	
 
 	if err  != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
@@ -53,6 +52,7 @@ func GetFlightByFlightNumber(context *gin.Context){
 
 func SaveFlight(cx *gin.Context){
 	var flight model.Flight
+	var plane model.Plane
 
 	err := cx.ShouldBindJSON(&flight)
 
@@ -63,6 +63,21 @@ func SaveFlight(cx *gin.Context){
 		return
 	}
 
+	_, err = plane.GetPlaneInfo(flight.PlaneId)
+
+	if err == mongo.ErrNoDocuments{
+		cx.JSON(http.StatusNotFound, gin.H{
+			"message":"Plane does not exist",
+		})
+		return
+	}else if err != nil{
+		cx.JSON(http.StatusInternalServerError, gin.H{
+			"message":"Could not find error",
+		})
+		return
+	}
+	
+
 	newFlight := model.Flight{
 		ID: primitive.NewObjectID(),
 		Airline: flight.Airline,
@@ -70,6 +85,7 @@ func SaveFlight(cx *gin.Context){
 		Origin: flight.Origin,
 		Destiny:flight.Destiny,
 		PlaneId: flight.PlaneId,
+		Passengers: flight.Passengers,
 	}
 
 	res, err := flight.Save(&newFlight)
