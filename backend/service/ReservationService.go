@@ -86,6 +86,11 @@ func SaveReservation(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Reservation created", "res": res.InsertedID})
 }
 
+
+func DeleteReservation (ctx *gin.Context){
+	
+}
+
 func createNewReservation(request requestType, reservationID, flightNumber string) model.Reservation {
 	return model.Reservation{
 		ID:             primitive.NewObjectID(),
