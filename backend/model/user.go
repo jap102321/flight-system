@@ -22,7 +22,6 @@ func getUserByEmail(u *User) User{
 	var user User
 	filter := bson.M{"email": &u.Email}
 	_ = db.DB.Collection("user").FindOne(context.TODO(), filter).Decode(&user)
-
 	return user
 }
 
@@ -42,14 +41,13 @@ func (u *User) CreateUser(newUser User) (*mongo.InsertOneResult, error){
 	return res, nil
 }
 
-func (u *User) LogUser() error{
+func (u *User) LogUser() (User, error){
 	user := getUserByEmail(u)
-
 	validPassword  := utils.DecryptPassword(u.Password, user.Password)
 
 	if !validPassword{
-		return errors.New("invalid credentials")
+		return User{}, errors.New("invalid credentials")
 	}
 	
-	return nil
+	return user, nil
 }

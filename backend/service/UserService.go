@@ -66,8 +66,8 @@ func LogIn(ctx *gin.Context){
 		})
 		return
 	}
-
-	err = user.LogUser()
+	
+	verifiedUser, err := user.LogUser()
 
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
@@ -76,7 +76,18 @@ func LogIn(ctx *gin.Context){
 		return
 	}
 
+	token, err := utils.GenerateJWTToken(user.Email, verifiedUser.ID)
+
+	if err != nil {
+		errorMessage := fmt.Sprintf("Error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message":errorMessage,
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Login succesfully",
+		"token": token,
 	})
 }

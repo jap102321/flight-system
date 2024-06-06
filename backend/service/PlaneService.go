@@ -64,6 +64,7 @@ func SaveNewPlaneToDb(ctx *gin.Context){
 		return
 	}
 
+
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message":"New flight added", 
 		"plane": res,

@@ -16,10 +16,18 @@ var FlightModel model.Flight
 func GetAllFlights(context *gin.Context) {
 	flights, err := FlightModel.GetAllFlights()
 
-
 	if err != nil{
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message":"Could not fetch data of flights",
+		})
+		return
+	}
+
+	_, exists := context.Get("userId")
+
+	if !exists {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message":"Not authorized to add flight",
 		})
 		return
 	}
