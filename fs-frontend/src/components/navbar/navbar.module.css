@@ -1,0 +1,32 @@
+.navbar{
+   display: flex;
+   flex-direction:row;
+   justify-content: space-between; 
+   align-items: center;
+}
+
+.list{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    gap: .7rem;
+}
+
+.button{
+    border: none;
+    padding-inline: 1rem;
+    padding-block: .5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.signup{
+    background-color: black;
+    color: white;
+}
+
+.button:hover{
+    transform: scale(1.1);
+    transition: .5s;
+}
