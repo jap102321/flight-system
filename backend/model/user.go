@@ -16,6 +16,7 @@ type User struct {
 	Email        string        `bson:"email" json:"email"`
 	Password     string        `bson:"password" json:"password"`
 	Reservations []Reservation `bson:"reservations" json:"reservations"`
+	IsAdmin bool `bson:"isAdmin" json:"isAdmin"`
 }
 
 func getUserByEmail(u *User) User{
@@ -50,4 +51,24 @@ func (u *User) LogUser() (User, error){
 	}
 	
 	return user, nil
+}
+
+func (u *User) GetUserById(id primitive.ObjectID) error{
+	filter := bson.M{"_id": id}
+
+	err := db.DB.Collection("user").FindOne(context.TODO(), filter).Decode(&u)
+
+	return err
+}
+
+func (u *User) DeleteUser(id primitive.ObjectID) (*mongo.DeleteResult, error){
+	filter := bson.M{"_id": id}
+
+	res, err := db.DB.Collection("user").DeleteOne(context.TODO(), filter)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

@@ -77,4 +77,14 @@ func (c Customer) SaveClientBulk(newClients []interface{}) (*mongo.InsertManyRes
 	return res, nil
 }
 
+func (c Customer) DeleteCustomer(customer_id string) (*mongo.DeleteResult, error){
+	filter := bson.M{"_id": customer_id}
 
+	res, err :=db.DB.Collection("customer").DeleteOne(context.TODO(), filter)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}

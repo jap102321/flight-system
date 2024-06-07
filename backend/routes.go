@@ -8,21 +8,14 @@ import (
 
 func Routes(server *gin.Engine) {
 
-	planeRoutes := server.Group("/plane")
-	planeRoutes.GET("/:plane_id", service.GetPlane)
-	planeRoutes.POST("/", service.SaveNewPlaneToDb)
-
 
 	flightRoutes := server.Group("/flights")
-	flightRoutes.GET("/", service.GetAllFlights)
 	flightRoutes.GET("/:flight-number", service.GetFlightByFlightNumber)
-	flightRoutes.POST("/", service.SaveFlight)
-	flightRoutes.DELETE("/:flight-number", service.DeleteFlight)
+	
 
 	customerRoutes := server.Group("/customer")
 	customerRoutes.POST("/", service.CreateCustomer)
 	customerRoutes.POST("/bulk", service.CreateCustomersBulk)
-	customerRoutes.GET("/:document", service.CreateCustomersBulk)
 
 	reservationRoutes := server.Group("/reservation")
 	reservationRoutes.POST("/:flight-number", service.SaveReservation)
@@ -35,7 +28,13 @@ func Routes(server *gin.Engine) {
 	
 	authenticated := server.Group("/auth")
 	authenticated.Use(middleware.Authenticate)
+	authenticated.GET("/", service.GetAllFlights)
+	authenticated.POST("/", service.SaveFlight)
+	authenticated.GET("/plane/:plane_id", service.GetPlane)
+	authenticated.POST("/plane", service.SaveNewPlaneToDb)
 	authenticated.GET("/flight", service.GetAllFlights)
-	
+	authenticated.DELETE("/user/:id", service.DeleteUser)
+	authenticated.DELETE("/customer/:id", service.DeleteCustomers)
+	authenticated.DELETE("/:flight-number", service.DeleteFlight)
 
 }

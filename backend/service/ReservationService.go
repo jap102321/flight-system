@@ -40,6 +40,7 @@ func GetReservations(ctx *gin.Context){
 
 }
 
+
 func SaveReservation(ctx *gin.Context) {
 	var (
 		plane   model.Plane
@@ -88,7 +89,16 @@ func SaveReservation(ctx *gin.Context) {
 
 
 func DeleteReservation (ctx *gin.Context){
+	var reservation model.Reservation
+	res_id := ctx.Param("reservation_id")
+
+    res, err := reservation.DeleteReservation(res_id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message":"Could not delete reservation"})
+	}
 	
+	ctx.JSON(http.StatusOK, gin.H{"message":"Element deleted.", "res": res})
 }
 
 func createNewReservation(request requestType, reservationID, flightNumber string) model.Reservation {

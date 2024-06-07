@@ -36,6 +36,7 @@ func CreateUser(ctx *gin.Context){
 		ID: primitive.NewObjectID(),
 		Email: user.Email,
 		Password: hashedPass,
+		IsAdmin: false,
 	}
 
 
@@ -76,7 +77,7 @@ func LogIn(ctx *gin.Context){
 		return
 	}
 
-	token, err := utils.GenerateJWTToken(user.Email, verifiedUser.ID)
+	token, err := utils.GenerateJWTToken(user.Email, verifiedUser.ID, user.IsAdmin)
 
 	if err != nil {
 		errorMessage := fmt.Sprintf("Error: %v", err)
@@ -89,5 +90,56 @@ func LogIn(ctx *gin.Context){
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Login succesfully",
 		"token": token,
+	})
+}
+
+func DeleteUser(ctx *gin.Context){
+	 var user model.User
+	 userId, exists := ctx.Get("userId")
+	 paramId := ctx.Param("id")
+
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Invalid credentials",
+		})
+		return
+	}
+
+	id, err := primitive.ObjectIDFromHex(paramId)
+	
+	if err != nil {
+		fmt.Print(err)
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Could not parse id",
+		})
+		return
+	}
+
+	if err = user.GetUserById(id); err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Could not find this userId .",
+		})
+		return
+	}
+
+	if userId != user.ID{
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Could not delete this user due to auth issues.",
+		})
+		return
+	}	
+
+	deleteResult, err := user.DeleteUser(user.ID)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message":"Could not delete this user due to internal error",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":"User deleted",
+		"res": deleteResult,
 	})
 }

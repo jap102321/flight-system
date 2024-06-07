@@ -27,6 +27,7 @@ func GetPlane(ctx *gin.Context){
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": errorMesage,
 		})
+		return
 	}
 
 
@@ -68,5 +69,24 @@ func SaveNewPlaneToDb(ctx *gin.Context){
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message":"New flight added", 
 		"plane": res,
+	})
+}
+
+func DeletePlane(ctx *gin.Context){
+	var plane model.Plane
+	id := ctx.Param("id")
+
+	res, err := plane.DeletePlane(id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message":"Could not delete error",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":"Plane deleted",
+		"res": res,
 	})
 }

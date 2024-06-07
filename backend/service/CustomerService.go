@@ -24,13 +24,13 @@ func GetCustomerAgeCategory(customer model.Customer) string{
 }
 
 func GetCustomers(ctx *gin.Context){
-
 	res, err := customer.GetAllCustomers()
 
 	if err != nil{
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not fetch customers",
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
@@ -109,5 +109,24 @@ func CreateCustomersBulk(ctx *gin.Context){
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message":"Saved",
 		"customersIDs": res.InsertedIDs,
+	})
+}
+
+func DeleteCustomers (ctx *gin.Context) {
+	var customer model.Customer
+	customer_id := ctx.Param("id")
+
+	res, err := customer.DeleteCustomer(customer_id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not delete customer",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":"Customer deleted",
+		"res": res,
 	})
 }

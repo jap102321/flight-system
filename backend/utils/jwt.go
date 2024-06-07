@@ -29,10 +29,11 @@ func getDotEnv() (string, error){
 }
 
 
-func GenerateJWTToken(email string, userId primitive.ObjectID) (string, error){
+func GenerateJWTToken(email string, userId primitive.ObjectID, isAdmin bool) (string, error){
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,
 		"uId": userId,
+		"isAdmin": isAdmin,
 		"exp": time.Now().Add(time.Hour * 2).Unix(),
 	})
 
@@ -75,6 +76,7 @@ func VerifyToken(token string) (primitive.ObjectID, error) {
 	}
 
 	uId, err := primitive.ObjectIDFromHex(uIdStr)
+	
 	if err != nil {
 		return primitive.NilObjectID, fmt.Errorf("invalid uId: %v", err)
 	}
