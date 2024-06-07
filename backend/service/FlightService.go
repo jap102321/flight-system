@@ -13,6 +13,29 @@ import (
 
 var FlightModel model.Flight
 
+
+func GetFlightByRoute(ctx *gin.Context){
+	origin := ctx.Param("origin")
+	destiny := ctx.Param("destiny")
+
+	flights, err := FlightModel.GetFlightByRoute(origin, destiny)
+	
+	if err != nil {
+		fmt.Println(err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message":"Could not fetch flights",
+		})
+		return
+	}
+
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":"Flights fetched correctly",
+		"flights": flights,
+	})
+
+}
+
 func GetAllFlights(context *gin.Context) {
 	flights, err := FlightModel.GetAllFlights()
 

@@ -11,7 +11,7 @@ func Routes(server *gin.Engine) {
 
 	flightRoutes := server.Group("/flights")
 	flightRoutes.GET("/:flight-number", service.GetFlightByFlightNumber)
-	
+	flightRoutes.GET("/route/:origin/:destiny", service.GetFlightByRoute)
 
 	customerRoutes := server.Group("/customer")
 	customerRoutes.POST("/", service.CreateCustomer)
@@ -28,8 +28,8 @@ func Routes(server *gin.Engine) {
 	
 	authenticated := server.Group("/auth")
 	authenticated.Use(middleware.Authenticate)
-	authenticated.GET("/", service.GetAllFlights)
-	authenticated.POST("/", service.SaveFlight)
+	authenticated.GET("/flights", service.GetAllFlights)
+	authenticated.POST("/flight", service.SaveFlight)
 	authenticated.GET("/plane/:plane_id", service.GetPlane)
 	authenticated.POST("/plane", service.SaveNewPlaneToDb)
 	authenticated.GET("/flight", service.GetAllFlights)

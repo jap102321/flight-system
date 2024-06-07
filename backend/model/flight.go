@@ -77,3 +77,29 @@ func (f Flight) DeleteEvent(flight_number string) (interface{}, error){
 
 	return delRes, err
 }
+
+func (f Flight) GetFlightByRoute(origin, destiny string) ([]primitive.M, error){
+	filter := bson.M{}
+	if origin != ""{
+		filter["origin"] = origin
+	}
+	if destiny != ""{
+		filter["destiny"] = destiny
+	}
+
+	cursor, err := db.DB.Collection("flight").Find(context.TODO(), filter)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(context.TODO())
+
+	var flights []bson.M
+	
+	if err = cursor.All(context.TODO(), &flights); err != nil {
+		return nil, err
+	}
+
+	return flights, nil
+}
