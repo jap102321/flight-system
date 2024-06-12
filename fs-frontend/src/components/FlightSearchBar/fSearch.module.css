@@ -1,0 +1,12 @@
+.input{
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.input input{
+    width: fit-content;
+    border: 1px solid grey;
+    border-radius: .2rem;
+    height: 26px;
+}

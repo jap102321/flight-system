@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
+import SearchFlight from "@/components/searchFlight/SearchFlight";
 
-const inter = Inter({ subsets: ["latin"] });
+
+const nunito = Nunito({style:["normal"],subsets:["latin"]})
 
 export const metadata: Metadata = {
   title: "Flight system",
@@ -17,10 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar/>
-        {children}
-        </body>
+      <body className={nunito.className}>
+        <div className="container">
+          <div className="planeBg">
+            <Navbar/>
+            <SearchFlight/>
+          </div>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

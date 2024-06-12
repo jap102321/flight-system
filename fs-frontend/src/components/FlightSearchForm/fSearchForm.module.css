@@ -1,0 +1,20 @@
+.searchBarForm{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.oneway{
+    display: flex;
+    gap: .25rem;
+}
+.submitButton{
+    border: none;
+    border-radius: .5rem;
+    height: 28px;
+    bottom: 0;
+    padding-inline: .5rem;
+    background-color: black;
+    color:white;
+}

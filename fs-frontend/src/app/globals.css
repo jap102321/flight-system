@@ -1,0 +1,28 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.planeBg{
+    background-image: url("/hero_image.jpg");
+    object-fit: contain;
+    background-repeat: no-repeat;
+    padding: .5rem;
+    margin-block-start: .4rem;
+    margin-inline: .4rem;
+    border-radius: .7rem;
+    height:37.5rem;
+    width: 99%;
+}
