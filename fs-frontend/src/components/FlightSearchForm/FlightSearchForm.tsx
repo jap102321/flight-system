@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import FlightSearchBar from "../FlightSearchBar/FlightSearchBar";
 import styles from "./fSearchForm.module.css"
 import Datepicker from "../FlightSearchBar/Datepicker/Datepicker";
+import { Nunito } from "next/font/google";
 
 interface handleSubmitType {
   origin:  string;
@@ -10,6 +11,9 @@ interface handleSubmitType {
   departureDate: any;
   returnDate?: any;
 }
+
+
+const nunito = Nunito({style:["normal"],weight:["700"],subsets:["latin"]})
 
 
 const FlightSearchForm = () => {
@@ -49,7 +53,7 @@ const FlightSearchForm = () => {
         {
           !isOneWay && <Datepicker label="Return Date"/>
         }
-      <button className={styles.submitButton} type="submit">Search flight.</button>
+      <button className={`${styles.submitButton} ${nunito.className}`} type="submit">Search</button>
     </form>
   </div>
   );

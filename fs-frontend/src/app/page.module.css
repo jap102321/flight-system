@@ -1,0 +1,10 @@
+.mainHero{
+    padding: .5rem;
+    margin-block-start: .4rem;
+    margin-inline: .4rem;
+    height: fit-content;
+}
+
+.mainHero h3{
+    font-weight: 400;
+}

@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: flex-end;
     padding-inline:1.5rem;
+    align-items: center;
 }
 
 .title{
@@ -17,7 +18,7 @@
     display: flex;
     align-items: center;
     background-color: #fff;
-    width: 100%;
+    width: fit-content;
     height: 9.375rem;
     border-radius: .5rem;
     padding-inline: .7rem;

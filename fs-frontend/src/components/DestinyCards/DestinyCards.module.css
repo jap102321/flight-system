@@ -1,0 +1,10 @@
+.cardContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    margin-block-start: 1.5rem;
+}
+
+.cardContainer h3{
+    font-size: 24px;
+}

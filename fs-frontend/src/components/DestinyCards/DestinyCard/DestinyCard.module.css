@@ -1,0 +1,9 @@
+
+.flightInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.price{
+    font-size: 24px;
+}

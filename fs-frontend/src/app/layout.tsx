@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
-import SearchFlight from "@/components/searchFlight/SearchFlight";
+import Navbar from "@/components/Navbar/Navbar";
+import SearchFlight from "@/components/FlightSearchSection/SearchFlight";
+import Footer from "@/components/Footer/Footer";
 
 
 const nunito = Nunito({style:["normal"],subsets:["latin"]})
@@ -26,6 +27,7 @@ export default function RootLayout({
             <SearchFlight/>
           </div>
           {children}
+          <Footer/>
         </div>
       </body>
     </html>
