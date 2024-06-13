@@ -36,9 +36,6 @@ const FlightSearchForm = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(formResult)
-  }, [formResult]);
 
   return(
    <div className={styles.container}>
