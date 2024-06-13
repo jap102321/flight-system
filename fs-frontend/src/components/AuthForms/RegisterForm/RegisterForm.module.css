@@ -1,0 +1,11 @@
+.input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5rem;
+}
+.input input {
+    height: 27px;
+    border-radius: .25rem;
+    border: 1px solid grey;
+    padding-inline-start: .25rem;
+}

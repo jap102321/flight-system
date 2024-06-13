@@ -1,0 +1,27 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 15rem auto;
+    border: 1px solid black;
+    width: 350px;
+    height: 300px;
+    gap: 1.5rem;
+}
+
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.submitButton{
+    border: none;
+    width: 150px;
+    background-color: #000;
+    color: white;
+    padding: .5rem;
+    border-radius: .25rem;
+    cursor: pointer;
+}

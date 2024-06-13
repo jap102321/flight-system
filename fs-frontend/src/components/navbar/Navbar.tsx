@@ -13,7 +13,7 @@ const Navbar = () => {
         <Image src={"/logo-plane.png"} width={50} height={50} alt='logo'/>
         <ul className={styles.list}>
             <li><button className={`${styles.button}`}><Link href="/login" style={nunito.style}>Log In</Link></button></li>
-            <li ><button className={`${styles.button} ${styles.signup}`} style={nunito.style}><Link href="/signup">Sign Up</Link></button></li>
+            <li ><button className={`${styles.button} ${styles.signup}`} style={nunito.style}><Link href="/register">Sign Up</Link></button></li>
         </ul>
     </nav>
   )

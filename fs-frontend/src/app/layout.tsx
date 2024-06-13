@@ -23,10 +23,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunito.className}>
         <div className="container">
-          <div className="planeBg">
-            <Navbar/>
-            <SearchFlight/>
-          </div>
           {children}
           <Footer/>
         </div>
