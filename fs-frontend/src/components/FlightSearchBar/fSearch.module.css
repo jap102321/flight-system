@@ -4,9 +4,10 @@
     gap: .4rem;
 }
 
-.input input{
+.input select{
     width: fit-content;
     border: 1px solid grey;
     border-radius: .2rem;
     height: 26px;
+    width: 140px;
 }
