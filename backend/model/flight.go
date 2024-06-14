@@ -20,6 +20,7 @@ type Flight struct {
 	DateOfDeparture time.Time `json:"date_of_departure" bson:"date_of_departure"`
 	DateOfArrival time.Time `json:"date_of_arrival" bson:"date_of_arrival"`
 	Passengers []primitive.ObjectID `json:"passengers" bson:"passengers"`
+	Price int `json:"price" bson:"price"`
 }
 
 
