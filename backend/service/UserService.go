@@ -87,9 +87,16 @@ func LogIn(ctx *gin.Context){
 		return
 	}
 
+	visibleDataForFE := map[string]interface{}{
+		"email": verifiedUser.Email,
+		"isAdmin": verifiedUser.IsAdmin,
+	}
+
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Login succesfully",
 		"token": token,
+		"userInfo": visibleDataForFE,
 	})
 }
 

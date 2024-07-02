@@ -83,3 +83,53 @@ func VerifyToken(token string) (primitive.ObjectID, error) {
 
 	return uId, nil
 }
+
+func VerifyAdmin(token string) (primitive.ObjectID, error) {
+	parsedToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+
+		secretKey, err := getDotEnv()
+		if err != nil {
+			return nil, errors.New("could not get secret key")
+		}
+
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		return primitive.NilObjectID, errors.New("error parsing")
+	}
+
+	if !parsedToken.Valid {
+		return primitive.NilObjectID, errors.New("token is not valid")
+	}
+
+	claims, ok := parsedToken.Claims.(jwt.MapClaims)
+	if !ok {
+		return primitive.NilObjectID, errors.New("error parsing data from token")
+	}
+
+	uIdStr, ok := claims["uId"].(string)
+	if !ok {
+		return primitive.NilObjectID, errors.New("error parsing data from token")
+	}
+
+	isAdmin, ok := claims["isAdmin"].(bool)
+	if !ok {
+		return primitive.NilObjectID, errors.New("error parsing data from token")
+	}
+
+	if !isAdmin{
+		return primitive.NilObjectID, errors.New("access denied")
+	}
+
+	uId, err := primitive.ObjectIDFromHex(uIdStr)
+	
+	if err != nil {
+		return primitive.NilObjectID, fmt.Errorf("invalid uId: %v", err)
+	}
+
+	return uId, nil
+}

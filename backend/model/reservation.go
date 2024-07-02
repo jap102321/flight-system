@@ -20,6 +20,7 @@ type Reservation struct {
 	DateOfDeparture time.Time `json:"date_of_departure" bson:"date_of_departure"`
 	DateOfArrival time.Time `json:"date_of_arrival" bson:"date_of_arrival"`
 	FlightNumber string `json:"flight_number" bson:"flight_number"`
+	Email string `json:"email" bson:"email"`
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

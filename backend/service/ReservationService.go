@@ -108,6 +108,7 @@ func createNewReservation(request requestType, reservationID, flightNumber strin
 		DateOfDeparture: request.Reservation.DateOfDeparture,
 		DateOfArrival:   request.Reservation.DateOfArrival,
 		FlightNumber:    flightNumber,
+		Email: request.Reservation.Email,
 	}
 }
 

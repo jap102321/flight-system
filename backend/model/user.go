@@ -72,3 +72,7 @@ func (u *User) DeleteUser(id primitive.ObjectID) (*mongo.DeleteResult, error){
 
 	return res, nil
 }
+
+func (u *User) saveReservationToUser(reservation Reservation){
+	
+}
