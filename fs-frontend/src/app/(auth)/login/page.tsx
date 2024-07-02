@@ -6,6 +6,7 @@ import LoginForm from "@/components/AuthForms/LoginForm/LoginForm";
 import Link from "next/link";
 import { useStore } from "@/utils/store";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 
 
@@ -25,20 +26,9 @@ const LogIn = () => {
   const sendData = async () => {
     try{
       setLoading(true)
-      const res = await fetch("http://localhost:8080/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type" : "application/json",
-        },
-        body: JSON.stringify(formState),
-      })
-
-      if(!res.ok){
-        throw new Error("Could not log in, check your credentials.")
-      }
-
-      const data = await res.json()
-      setJWTToken(data.token)
+      const data = await signIn("credentials", formState)
+      console.log(data)
+      // setJWTToken(data?.token)
       setUserLogged(true)
       setLoading(false);
       router.push("/")
