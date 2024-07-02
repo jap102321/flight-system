@@ -6,11 +6,11 @@ const RegisterForm = () => {
     <>
         <div className={styles.input}>
             <label htmlFor="email">Email</label>
-            <input name="email" autoComplete="off" type="text"/>
+            <input name="email" autoComplete="off" type="text"required/>
         </div>
         <div className={styles.input}>
             <label htmlFor="password">Password</label>
-            <input name="password" type="password"/>
+            <input name="password" type="password"required/>
         </div>
     </>
   );

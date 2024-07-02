@@ -1,12 +1,20 @@
 import { create } from "zustand";
 
 
-interface PassengerState {
-    passengers: number
-    setPassengerNumber : (passenger : number) => void
+interface FlightAppGlobalStates {
+    jwtToken : string
+    setJwtToken : (token : string) => void
+    isLoggedIn : boolean,
+    setIsLoggedIn : (isLogged : boolean) => void;
+    isAdmin : boolean, 
+    setIsAdmin : (isAdmin : boolean) => void;
   }
   
-  const usePassengerStore = create<PassengerState>()((set) => ({
-    passengers: 0,
-    setPassengerNumber: (passenger) => set(() => ({passengers: passenger}))
+  export const useStore = create<FlightAppGlobalStates>()((set) => ({
+    jwtToken : "",
+    setJwtToken : (token) => set(()=> ({jwtToken: token})),
+    isLoggedIn : false,
+    setIsLoggedIn : () => set(()=> ({isLoggedIn : true})),
+    isAdmin : false,
+    setIsAdmin : () => set(()=> ({isAdmin : true})),
   }))
