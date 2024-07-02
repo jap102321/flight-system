@@ -15,9 +15,28 @@ interface handleSubmitType {
 
 const nunito = Nunito({style:["normal"],weight:["700"],subsets:["latin"]})
 
+const PlacesArray = [{
+  key:"Medellín",
+  value: "medellin"
+},
+{
+  key:"Pereira",
+  value: "pereira"
+},
+{
+  key:"Barranquilla",
+  value: "barranquilla"
+},
+{
+  key:"Bogotá",
+  value: "bogota"
+}
+]
 
 const FlightSearchForm = () => {
   const [formResult, setFormResult] = useState({})
+  const [selectedCity, setSelectedCity] = useState<string>("medellin");
+  const filterByOptionSelected = PlacesArray.filter(({value})=> value !== selectedCity)
 
   const formRef = useRef<HTMLFormElement>(null)
   const [isOneWay, setOneWay] = useState<boolean>(false)
@@ -44,8 +63,8 @@ const FlightSearchForm = () => {
       <label htmlFor="isOneWay">One way flight?</label>
     </div>
     <form ref={formRef} onSubmit={(evt)=> handleSubmitData(evt)} className={styles.searchBarForm}>
-        <FlightSearchBar label="From" inputName="origin"/>
-        <FlightSearchBar label="To" inputName="destiny"/>
+        <FlightSearchBar label="From" inputName="origin" options={filterByOptionSelected} setSelectedCity={setSelectedCity}/>
+        <FlightSearchBar label="To" inputName="destiny" options={filterByOptionSelected} setSelectedCity={setSelectedCity}/>
         <Datepicker label="Departure Date"/>
         {
           !isOneWay && <Datepicker label="Return Date"/>
