@@ -21,7 +21,7 @@ type Plane struct {
 func (p Plane) GetPlaneInfo(plane_id string) (*primitive.M, error){
 	var plane bson.M
 	
-	err:= db.DB.Collection("plane").FindOne(context.TODO(), bson.D{primitive.E{Key: "_id", Value: plane_id}}).Decode(&plane)
+	err:= db.DB.Collection("plane").FindOne(context.TODO(), bson.D{primitive.E{Key: "plane_id", Value: plane_id}}).Decode(&plane)
 
 	if err != nil {
 		return nil, err

@@ -35,8 +35,15 @@ const PlacesArray = [{
 
 const FlightSearchForm = () => {
   const [formResult, setFormResult] = useState({})
-  const [selectedCity, setSelectedCity] = useState<string>("medellin");
-  const filterByOptionSelected = PlacesArray.filter(({value})=> value !== selectedCity)
+  const [selectedCity, setSelectedCity] = useState({
+    origin: "",
+    destiny:"",
+  });
+
+  const filterOriginOptions = PlacesArray;
+  const filterDestinyOptions = PlacesArray.filter(
+    ({ value }) => value !== selectedCity.origin
+  );
 
   const formRef = useRef<HTMLFormElement>(null)
   const [isOneWay, setOneWay] = useState<boolean>(false)
@@ -63,8 +70,8 @@ const FlightSearchForm = () => {
       <label htmlFor="isOneWay">One way flight?</label>
     </div>
     <form ref={formRef} onSubmit={(evt)=> handleSubmitData(evt)} className={styles.searchBarForm}>
-        <FlightSearchBar label="From" inputName="origin" options={filterByOptionSelected} setSelectedCity={setSelectedCity}/>
-        <FlightSearchBar label="To" inputName="destiny" options={filterByOptionSelected} setSelectedCity={setSelectedCity}/>
+        <FlightSearchBar label="From" inputName="origin" options={filterOriginOptions} setSelectedCity={setSelectedCity}/>
+        <FlightSearchBar label="To" inputName="destiny" options={filterDestinyOptions} setSelectedCity={setSelectedCity}/>
         <Datepicker label="Departure Date"/>
         {
           !isOneWay && <Datepicker label="Return Date"/>

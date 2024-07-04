@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
-import SearchFlight from "@/components/FlightSearchSection/SearchFlight";
 import Footer from "@/components/Footer/Footer";
 
 

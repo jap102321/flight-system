@@ -46,15 +46,6 @@ func GetAllFlights(context *gin.Context) {
 		return
 	}
 
-	_, exists := context.Get("userId")
-
-	if !exists {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message":"Not authorized to add flight",
-		})
-		return
-	}
-
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Flights fetched succesfully",
 		"flights" : flights,
@@ -108,15 +99,24 @@ func SaveFlight(cx *gin.Context){
 		return
 	}
 	
+	if flight.DateOfDeparture.IsZero() || flight.DateOfArrival.IsZero() || flight.Price == 0 {
+		cx.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid date or price",
+		})
+		return
+	}
 
 	newFlight := model.Flight{
 		ID: primitive.NewObjectID(),
 		Airline: flight.Airline,
 		FlightNumber: strings.ToUpper(flight.FlightNumber),
+		DateOfDeparture: flight.DateOfDeparture,
+		DateOfArrival: flight.DateOfArrival,
 		Origin: flight.Origin,
 		Destiny:flight.Destiny,
 		PlaneId: flight.PlaneId,
 		Passengers: flight.Passengers,
+		Price: flight.Price,
 	}
 
 	res, err := flight.Save(&newFlight)
